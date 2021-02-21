@@ -4,7 +4,7 @@
     "description": "Abstraction layer for the VaultRE API endpoint",
     "keywords": ["real estate", "vaultre"],
     "homepage": "https://github.com/mihaikelemen/vaultre",
-    "license": " Apache-2.0",
+    "license": "Apache 2.0",
     "authors": [
         {
             "name": "Mihai KELEMEN",
