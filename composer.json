@@ -1,0 +1,25 @@
+{
+    "name": "mihaikelemen/vaultre",
+    "type": "library",
+    "description": "Abstraction layer for the VaultRE API endpoint",
+    "keywords": ["real estate", "vaultre"],
+    "homepage": "https://github.com/mihaikelemen/vaultre",
+    "license": " Apache-2.0",
+    "authors": [
+        {
+            "name": "Mihai KELEMEN",
+            "email": "mihai@webmanage.ro",
+            "homepage": "https://webmanage.ro",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "MihaiKelemen\\VaultRe\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=7.2",
+        "guzzlehttp/guzzle": "^7.2"
+    }
+}
