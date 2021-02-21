@@ -1,6 +1,6 @@
 <?php
 
-namespace MihaiKelemen;
+namespace MihaiKelemen\VaultRe;
 
 use GuzzleHttp\Client;
 
