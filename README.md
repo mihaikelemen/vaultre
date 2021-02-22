@@ -1,4 +1,4 @@
-# VaultReApi
+# VaultRe API wrapper
 
 Small utility, inspired by the [official examples](https://github.com/VaultGroup/api-samples), to handle API calls on VaultRE endpoints, documented here https://docs.api.vaultre.com.au/
 
