@@ -42,6 +42,13 @@ class VaultRe
     private $page_size = 100;
 
     /**
+     * Current page
+     * 
+     * @var integer
+     */
+    private $page = 1;
+
+    /**
      * Guzzle debug option
      * 
      * @var boolean false
@@ -78,7 +85,7 @@ class VaultRe
     }
 
     /**
-     * Updates the number of items displayed on a single call
+     * Updates the number of items displayed on a page
      * 
      * @param  int $number 
      * @return VaultRe 
@@ -86,6 +93,18 @@ class VaultRe
     public function setPageSize(int $number)
     {
         $this->page_size = $number;
+        return $this;
+    }
+
+    /**
+     * Set the page number to be retrived
+     * 
+     * @param int $number 
+     * @return VaultRe 
+     */
+    public function setPage(int $number)
+    {
+        $this->page = $number;
         return $this;
     }
 
@@ -148,8 +167,8 @@ class VaultRe
      */
     public function pagination()
     {
-        return isset($this->response['totalItems']) ? ['items' => $this->response['totalItems'], 'pages' => $this->response['totalPages'],
-        'urls' => $this->response['urls']] : [];
+        return isset($this->response['totalItems']) ? ['total_items' => $this->response['totalItems'], 'total_pages' => $this->response['totalPages'],
+        'navigation' => $this->response['urls']] : [];
     }
 
     /**
@@ -202,7 +221,7 @@ class VaultRe
             $url = $this->attribute;
 
             if (isset($args[0])) {
-                $url .= \sprintf('/%s?pageSize=%d', $args[0], $this->page_size);
+                $url .= \sprintf('/%s?pageSize=%d&page=%d', $args[0], $this->page_size, $this->page);
             }
 
             if (isset($args[1]) && \is_array($args[1])) {
