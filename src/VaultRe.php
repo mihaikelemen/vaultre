@@ -49,18 +49,11 @@ class VaultRe
     private $page = 1;
 
     /**
-     * Guzzle debug option
-     * 
-     * @var boolean false
-     */
-    private $debug = false;
-
-    /**
      * API methods to handle payloads
      * 
      * @var array
      */
-    private $methods = ['fetch' => 'get', 'add' => 'post', 'delete' => 'delete', 'update' => 'put'];
+    private $methods = ['fetch' => 'GET', 'add' => 'POST', 'delete' => 'DELETE', 'update' => 'PUT'];
 
     /**
      * @param string $key   API key
@@ -109,35 +102,13 @@ class VaultRe
     }
 
     /**
-     * Enables Guzzle Http Client debug option
-     * 
-     * @return VaultRe 
-     */
-    public function debugOn()
-    {
-        $this->debug = true;
-        return $this;
-    }
-
-    /**
-     * Disables Guzzle Http Client debug option
-     *
-     * @return VaultRe 
-     */
-    public function debugOff()
-    {
-        $this->debug = false;
-        return $this;
-    }
-
-    /**
      * Check the presence of errors
      * 
      * @return bool 
      */
     public function isSuccess()
     {
-        return \mb_strlen($this->error) === 0;
+        return \strlen($this->error) === 0;
     }
 
     /**
@@ -191,11 +162,11 @@ class VaultRe
     public function __call(string $action, $arguments)
     {
         if (\in_array($action, \array_keys($this->methods))) {
-            $this->send(\mb_strtoupper($this->methods[$action]), $arguments);
+            $this->send($this->methods[$action], $arguments);
             return $this;
         }
 
-        throw new \Exception(\sprintf("Undefined '%s' method called!", $action), 1);
+        throw new \Exception(\sprintf("Undefined '%s' method!", $action), 1);
     }
 
     /**
@@ -221,25 +192,24 @@ class VaultRe
             $url = $this->attribute;
 
             if (isset($args[0])) {
-                $url .= \sprintf('/%s?pageSize=%d&page=%d', $args[0], $this->page_size, $this->page);
+                $url .= \sprintf('/%s', $args[0]);
             }
+
+            $url .= \sprintf('%spagesize=%d&page=%d', (\strpos($url, '?') ? '&' : '?'), $this->page_size, $this->page);
 
             if (isset($args[1]) && \is_array($args[1])) {
                 $payload = ['json' => $args[1]];
             } 
 
-            $client = new Client(
-                [
+            $client = new Client([
                 'base_uri' => $this->endpoint,
                 'headers' => [
                     'X-Api-Key' => $this->api_key,
                     'Authorization' => \sprintf('Bearer %s', $this->token)
-                ],
-                'debug' => $this->debug
                 ]
-            );
+            ]);
 
-            $response = $client->request(\mb_strtoupper($method), $url, $payload);
+            $response = $client->request($method, $url, $payload);
 
             $this->handleResponse($response);
         } catch (\Throwable $e) {
